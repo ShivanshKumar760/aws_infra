@@ -1,0 +1,61 @@
+# ==============================================================================
+# 1. Terraform Exclusions (Blocks State Logs, Cache Binaries, & Infrastructure Secrets)
+# ==============================================================================
+# Caching folders containing downloaded provider plugins
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+tfplan.binary
+terraform.tfvars
+# Core State logs - NEVER COMMIT THESE (Contains raw secrets and connection strings)
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+
+# Custom variable runtime configurations (Where user passwords/keys are assigned)
+*.tfvars
+*.tfvars.json
+
+# Local compiled execution binaries
+tfplan.binary
+
+# Crash and debug logs
+crash.log
+crash.*.log
+
+# ==============================================================================
+# 2. Python & Flask Exclusions (Blocks Virtualenvs & Intermediary App Caches)
+# ==============================================================================
+# Compiled python machine footprints
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local tracking database files (Bypasses local sqlite storage leaks)
+*.db
+*.sqlite3
+
+# Distribution and execution build artifacts
+.eggs/
+build/
+dist/
+*.egg-info/
+
+# Isolated python runtimes (Blocks syncing your local 3.14.6 environment to GitHub)
+venv/
+.venv/
+env/
+.env
+
+# Environment configuration variables 
+.env.local
+.env.*.local
+
+# ==============================================================================
+# 3. macOS System Footprints
+# ==============================================================================
+.DS_Store
+.AppleDouble
+.LSOverride
