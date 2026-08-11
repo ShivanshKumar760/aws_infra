@@ -17,7 +17,7 @@ data "aws_vpc" "default" {
 
 
 #All subnet across ap-south-1a , ap-south-1b , ap-south-1c
-data "aws_subnet" "all" {
+data "aws_subnets" "all" {
   filter {
     name = "vpc-id"
     values = [ data.aws_vpc.default.id ]
