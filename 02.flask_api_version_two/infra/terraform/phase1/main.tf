@@ -169,7 +169,7 @@ resource "aws_security_group" "setup_sg" {
 
 resource "aws_instance" "setup_ec2" {
   # Updated to modern official Ubuntu 24.04 LTS image for ap-south-1 (Mumbai)
-  ami           = "ami-0e159ea61d9821166" 
+  ami           = "ami-0f58b397bc5c1f2e8" 
   instance_type = "t3.micro"
   key_name      = aws_key_pair.mac_key.key_name
 

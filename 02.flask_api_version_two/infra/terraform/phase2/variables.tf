@@ -114,7 +114,7 @@ variable "postgres_instance_type" {
 # Ubuntu 22.04 LTS in ap-south-1 — no custom AMI needed
 variable "ami_id" {
   type        = string
-  default     = "ami-0e159ea61d9821166"
+  default     = "ami-0f58b397bc5c1f2e8"
   description = "Ubuntu 22.04 LTS AMI in ap-south-1"
 }
 

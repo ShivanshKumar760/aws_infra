@@ -19,10 +19,13 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
 
-    with app.app_context():
-        from app.models import User,Todo
-        db.create_all()
+    # with app.app_context():
+    #     from app.models import User,Todo
+    #     db.create_all()
 
+    #  FIXED LAYOUT
+    
+    from app.models import User, Todo # Simply import, don't execute create_all() here
     from app.auth import auth_bp
     from app.todos import todos_bp
     app.register_blueprint(auth_bp)

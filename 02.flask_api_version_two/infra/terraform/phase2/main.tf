@@ -26,16 +26,29 @@ data "aws_subnets" "all" {
 
 #Get One subnet for the postgres Instance (use ap-south-1a)
 
-data "aws_subnet" "pg_subnet"{
-    filter {
-      name = "vpc-id"
-      values = [data.aws_vpc.default.id]
-    }
-    filter {
-      name = "availabilityZone"
-      values = ["ap-south-1a"]
-    }
+# data "aws_subnet" "pg_subnet"{
+#     filter {
+#       name = "vpc-id"
+#       values = [data.aws_vpc.default.id]
+#     }
+#     filter {
+#       name = "availabilityZone"
+#       values = ["ap-south-1a"]
+#     }
+# }
+
+# Fix: Changed filter parameter name from "availabilityZone" to "availability-zone"
+data "aws_subnet" "pg_subnet" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+  filter {
+    name   = "availability-zone" # <-- FIXED: Strictly must be kebab-case
+    values = ["ap-south-1a"]
+  }
 }
+
 
 #ELB service account for s3 log bucket policy
 
