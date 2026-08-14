@@ -15,6 +15,15 @@ resource "aws_autoscaling_group" "todo_api" {
     version = "$Latest"
   }
 
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+      instance_warmup        = 300
+    }
+    triggers = ["launch_template"]
+}
+
   tag {
     key = "Name"
     value = "todo-api-asg-instance"

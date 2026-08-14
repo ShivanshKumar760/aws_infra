@@ -57,6 +57,11 @@ data "aws_elb_service_account" "main" {
 }
 
 
+# data "aws_key_pair" "mac_key" {
+#   key_name = var.key_name
+# } wont work cause phase 1 resource has been destoryed so it wont be able to read
+
+
 data "aws_key_pair" "mac_key" {
   key_name = var.key_name
 }

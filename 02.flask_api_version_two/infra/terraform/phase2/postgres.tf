@@ -8,8 +8,8 @@
 # learning/demo purposes.
 
 resource "aws_instance" "postgres" {
-  ami           = var.ami_id             # Ubuntu 22.04 LTS, ap-south-1
-  instance_type = var.postgres_instance_type  # t3.micro
+  ami           = var.ami_id                  # Ubuntu 22.04 LTS, ap-south-1
+  instance_type = var.postgres_instance_type   # t3.micro
   key_name      = data.aws_key_pair.mac_key.key_name
 
   # Attach Postgres security group
@@ -20,28 +20,28 @@ resource "aws_instance" "postgres" {
 
   # user_data: install Docker, run PostgreSQL in Docker
   user_data = base64encode(<<-EOF
-    #!/bin/bash
-    set -euxo pipefail
+#!/bin/bash
+set -euxo pipefail
 
-    # Update system
-    apt-get update -y
+# Update system
+apt-get update -y
 
-    # Install Docker
-    curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
-    sh /tmp/get-docker.sh
-    systemctl enable docker
-    systemctl start docker
-    usermod -aG docker ubuntu
+# Install Docker
+curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+sh /tmp/get-docker.sh
+systemctl enable docker
+systemctl start docker
+usermod -aG docker ubuntu
 
-    # Install Docker Compose
-    mkdir -p /usr/local/lib/docker/cli-plugins
-    curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 \
-      -o /usr/local/lib/docker/cli-plugins/docker-compose
-    chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+# Install Docker Compose
+mkdir -p /usr/local/lib/docker/cli-plugins
+curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 \
+  -o /usr/local/lib/docker/cli-plugins/docker-compose
+chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
-    # Create the Postgres Docker Compose file
-    mkdir -p /opt/postgres
-    cat > /opt/postgres/docker-compose.yml << 'PGEOF'
+# Create the Postgres Docker Compose file
+mkdir -p /opt/postgres
+cat > /opt/postgres/docker-compose.yml << 'PGEOF'
 version: "3.9"
 services:
   postgres:
@@ -68,18 +68,18 @@ volumes:
     driver: local
 PGEOF
 
-    # Start PostgreSQL
-    cd /opt/postgres
-    docker compose up -d
+# Start PostgreSQL
+cd /opt/postgres
+docker compose up -d
 
-    # Wait for Postgres to be ready
-    sleep 20
+# Wait for Postgres to be ready
+sleep 20
 
-    # Verify Postgres is running
-    docker compose ps
+# Verify Postgres is running
+docker compose ps
 
-    # Create a systemd service so Postgres restarts on instance reboot
-    cat > /etc/systemd/system/todo-postgres.service << 'SVCEOF'
+# Create a systemd service so Postgres restarts on instance reboot
+cat > /etc/systemd/system/todo-postgres.service << 'SVCEOF'
 [Unit]
 Description=Todo Postgres Docker Compose
 After=docker.service
@@ -97,11 +97,11 @@ TimeoutStartSec=300
 WantedBy=multi-user.target
 SVCEOF
 
-    systemctl daemon-reload
-    systemctl enable todo-postgres
+systemctl daemon-reload
+systemctl enable todo-postgres
 
-    echo "PostgreSQL setup complete on $(hostname)"
-  EOF
+echo "PostgreSQL setup complete on $(hostname)"
+EOF
   )
 
   tags = {
@@ -112,7 +112,7 @@ SVCEOF
 }
 
 # Output the private IP so we know what to put in DATABASE_URL
-output "postgres_private_ip" {
-  value       = aws_instance.postgres.private_ip
-  description = "Private IP of the Postgres EC2 — used in DATABASE_URL by Flask instances"
-}
+# output "postgres_private_ip" {
+#   value       = aws_instance.postgres.private_ip
+#   description = "Private IP of the Postgres EC2 — used in DATABASE_URL by Flask instances"
+# }
