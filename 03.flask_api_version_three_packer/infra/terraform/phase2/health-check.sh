@@ -1,0 +1,1 @@
+for i in {1..20}; do STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$ALB/healthz"); echo "Attempt $i: HTTP $STATUS"; if [ "$STATUS" = "200" ]; then echo "API is up!"; curl -s "http://todo-api-alb-358034901.ap-south-1.elb.amazonaws.com/healthz" | python3 -m json.tool; break; fi; sleep 30; done
